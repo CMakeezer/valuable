@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <valuable/value-ptr.hpp>
+#include <value-ptr.hpp>
 
 using namespace valuable;
 

@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 project(valuable VERSION 2.2.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
-find_package(GTest REQUIRED)
+
+option(BUILD_TESTS "Build tests" OFF)
 
 add_library(valuable INTERFACE)
 add_library(valuable::valuable ALIAS valuable)
@@ -13,10 +14,15 @@ target_include_directories(valuable
 
 # Create an test target
 
-enable_testing()
-add_executable(valuable_test ${CMAKE_CURRENT_LIST_DIR}/valuable/tests/main.cpp)
-add_test(valuable_test valuable_test)
-target_link_libraries(valuable_test PRIVATE GTest::GTest GTest::Main valuable)
+if(BUILD_TESTS)
+    find_package(GTest)
+    enable_testing()
+    add_executable(valuable_test ${CMAKE_CURRENT_LIST_DIR}/valuable/tests/main.cpp)
+    add_test(valuable_test valuable_test)
+    target_link_libraries(valuable_test PRIVATE GTest::GTest GTest::Main valuable)
+    message(iNFO "CMAKE_CURRENT_LIST_DIR = ${CMAKE_CURRENT_LIST_DIR}")
+    target_include_directories(valuable_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/valuable/include)
+endif()
 
 
 # Create an install target
